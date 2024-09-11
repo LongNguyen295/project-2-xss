@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEMO XSS ATTACK</title>
+</head>
+
+<body>
+    <h1>XSS demo </h1>
+    <form method="GET" action="">
+        <label for="name">Please, enter your name:</label>
+        <input type="text" id="name" name="name">
+        <button type="submit">Submit</button>
+    </form>
+
+    <!-- <div id="greeting">
+        <p>Hello,
+            <script>
+                // Đoạn mã Javascript bị tấn công XSS
+                document.write(decodeURIComponent(window.location.search.substring(6)));
+            </script>
+            !
+        </p>
+    </div> -->
+
+    <div id="greeting">
+        <p>Hello,
+            <script>
+                //Đoạn mã phòng chống tấn công XSS
+                function escapeHTML(str) {
+                    return str.replace(/[<>"']/g, function (m) {
+                        return {
+                            '<': '&lt;',
+                            '>': '&gt;',
+                            '"': '&quot;',
+                            "'": '&#39;'
+                        }[m];
+                    });
+                }
+
+                var params = new URLSearchParams(window.location.search);
+                var name = params.get('name');
+                if (name) {
+                    document.write(escapeHTML(decodeURIComponent(name)));
+                }
+            </script>
+            !
+        </p>
+    </div>
+</body>
+
+</html>
